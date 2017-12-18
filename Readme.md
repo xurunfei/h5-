@@ -1,267 +1,575 @@
+[一.工厂方法模式个人总结](#一.工厂方法模式个人总结)    
+[1.简单工厂模式](#1.简单工厂模式)    
+[2.工厂方法模式](#2.工厂方法模式)    
+[3.抽象工厂方法](#3.抽象工厂方法)    
+[4.产品族和产品等级结构](#4.产品族和产品等级结构)    
+[5.一个车的例子](#5.一个车的例子)    
+ 	[5.1.简单工厂方法模式](#5.1.简单工厂方法模式)    
+ 	 	[5.1.1.产品](#5.1.1.产品)    
+ 	 	[5.1.2.工厂](#5.1.2.工厂)    
+ 	 	[5.1.3.客户端](#5.1.3.客户端)    
+ 	 	[5.1.4.小结](#5.1.4.小结)    
+ 	[5.2.工厂方法模式](#5.2.工厂方法模式)    
+ 	 	[5.2.1.产品](#5.2.1.产品)    
+ 	 	[5.2.2.工厂](#5.2.2.工厂)    
+ 	 	[5.2.3.客户端](#5.2.3.客户端)    
+ 	 	[5.2.4.小结](#5.2.4.小结)    
+ 	[5.3 抽象工厂方法模式](#5.3 抽象工厂方法模式)    
+ 	 	[5.3.1.产品](#5.3.1.产品)    
+ 	 	[5.3.2.产品](#5.3.2.产品)    
+ 	 	[5.3.3.工厂](#5.3.3.工厂)    
+ 	 	[5.3.4.客户端](#5.3.4.客户端)    
+ 	 	[5.3.5.小结](#5.3.5.小结)    
+ 	[5.4.类图比较](#5.4.类图比较)    
+ 	[5.5.总结](#5.5.总结)    
+[6.参考资料](#6.参考资料)    
 
+# 一.工厂方法模式个人总结
 
-[1. 基本信息](#1.test啊)    
-[1.1. 描述](#11test)    
-[1.2. 环境](#1.2. 环境)    
-[1.3. 使用](#1.3. 使用)    
-[1.4. 角色](#1.4. 角色)    
-[1.5. 流程](#1.5. 流程)    
-[2. 普通建造者模式](#2. 普通建造者模式)    
-[2.1. 拼魔方的流程](#2.1. 拼魔方的流程)    
-[2.2.  角色](#2.2.  角色)    
-[2.3.  流程](#2.3.  流程)    
-[2.4. 代码](#2.4. 代码)    
- 	[2.4.1. 产品](#2.4.1. 产品)    
- 	[2.4.2. 抽象建造者](#2.4.2. 抽象建造者)    
- 	[2.4.3. 具体建造者](#2.4.3. 具体建造者)    
- 	[2.4.4. 导演者](#2.4.4. 导演者)    
- 	[2.4.5. 客户端](#2.4.5. 客户端)     
- 	[2.4.6. 总结](#总结)   
- 	[2.4.6. 总结](#总结)    
+## 1.简单工厂模式
 
-# 1.test啊
+​	工厂方法就是这个模式的核心,它包含必要的判断逻辑,可以根据工厂类直接创造自己的实力,简单工厂模式是工厂方法模式的特殊情况,但是不符合**OCP(开闭原则)**
 
-## 11test
+## 2.工厂方法模式
 
-建造模式可以将一个产品的内部表象与产品的生成过程分割开来， 从而可以使一个建造过程生成具有不同的内部表象的产品对象。 
+​	工厂方法模式在工厂和产品之间增加接口,让子类决定实例化某一类,它针对的是某一类产品,也就是说**一个产品等级结构一个工厂**, 工厂方法中有一个抽象工厂,多个具体工厂,每个具体工厂对应一种产品
 
-## 1.2. 环境
+## 3.抽象工厂方法
 
-1.  **一个对象会有一些重要的性质， 在它们没有恰当的值之前， 对象不能作为一个完整的产品使用。** 比如， 一个电子邮件有发件人地址、 收件人地址、 主题、 内容、附录等部分， 而在最起码的收件人地址得到赋值之前， 这个电子邮件不能发出
-2.  **一个对象的一些性质必须按照某个顺序赋值才有意义 。 在某个性质没有赋值之前， 另一个性质则无法赋值**。  
+​	抽象方法是工厂方法中最具抽象的一种,它主要针对的是一系列的产品呢,也就是**产品族**.**它有多个抽象产品类,每个抽象产** **品类派生出多个具体产品类,一个抽象工厂类派生出多个具体工厂类,每个具体工厂类创建多个具体产品类**.工厂方法模式和抽象工厂方法模式的最主要的区别就是,**工厂方法模式针对的是一个产品等级结构,而抽象工厂方法针对的是多个产品等级结构也就是产品族** 
 
-## 1.3. 使用
+## 4.产品族和产品等级结构
 
-1.  这时候， 此对象相当于一个有待建造的产品， 而对象的这些性质相当于产品的零件 建造产品的过程是建造零件的过程。 由于建造零件的过程很复杂， 因此， 这些零件的建造过程往往被“外部化” 到另外一个称做建造者的对象里， 建造者对象返还给客户端的是一个全部零件都建造完毕的产品对象。  
-2.  **建造模式利用一个导演者对象和具体建造者对象一个--个地建造出所有的零件， 从而建造出完整的产品对象。****建造模式利用一个导演者对象和具体建造者对象一个--个地建造出所有的零件， 从而建造出完整的产品对象。**
-3.  建造者模式**将产品的结构和产品的零件建造过程对客户端隐藏起来**， 把对建造过程进行指挥的责任和具体建造者零件的责任分割开来， 达到责任划分和封装的目的 
+​	**工厂方法模式中**,一个抽象工厂创建一个产品等级结构的产品<br>	**抽象工厂方法中**,一个抽象工厂创建一个产品族的产品 
 
-## 1.4. 角色
+​	**产品等级结构**可以理解为同一种东西的不同的系列,比如电视机有海尔电视机,惠普电视机, 门有铁门,木门,都是同一种产品,但是他们的厂家或者制造方式不同<br>**产品族**可以理解为同一个地方生产的不同种类的产品,比如海尔厂家生产海尔电视机,电冰箱,洗衣机,木头厂制造木门,木桌子木椅子 ,它们都是同一个厂家制造的,不同种类的产品
 
-1.  **抽象建造者 ( Builder) 角色： 给出一个抽象接口， 以规范产品对象的各个组成成分的建造。** 利用建造方法生产零件,一般来说,有多少零件， 就有多少相应的建造方法[^类似于工厂方法的抽象类] 
-2.  具体建造者 ( Concrete Builder ) 角色： 担任这个角色的是与应用程序紧密相关的一些类， 它们在应用程序调用下创建产品的实例。  [^类似于工厂方法] 
-    1.  这个角色要完成的任务包括：
-        ①实现抽象建造者 Builder 所声明的接口， 给出一步一步地完成创建产品实例的操作。
-        ②在建造过程完成后， 提供产品的实例。 
-3.  导演者（Director) 角色： 担任这个角色的类调用具体建造者角色以创建产品对象。[^就是依据零件生产流程来调用零件的建造方法来生产产品] 
-4.  产品（Product ) 角色： 产品（Product ) 便是建造中的复杂对象。 一般来说， 一个系统中会有多于 •个的产品类， 而且这些产品类并不一定有共同的接口， 而完全可以是不相关联的。 
+右侧为产品等级结构和产品族的示意图![产品族和产品等级结构示意图](../../images/产品族和产品等级结构.jpg) 
 
-## 1.5. 流程
+  ## 5.一个车的例子
 
-客户端调用`Director`来生产产品,`Director` 通过具体建造者( ` ConCreateBuilder`)的流程来建造产品(`Produce`),具体建造者的流程是由抽象建造者(`Builder`)来规定
+### 5.1.简单工厂方法模式
 
-# 2. 普通建造者模式
+一个工厂要生产所有种类的车
 
-## 2.1. 拼魔方的流程
-
-这个是我自己想出来的,我只学过初级魔方,觉得很符合建造者模式流程,需要每个步骤有一定的流程才能完成拼图
-
-## 2.2.  角色
-
- 产品 : 完整的魔方
- 建造者 : 魔方公式
- 导演者 : 人 
-
-## 2.3.  流程
-
-客户端(`Client` )通过人(`people`)来得到拼好的魔方(`MagicCube`)，人按照拼魔方的公式(`ConcreateSpell`)来拼魔方
-
-## 2.4. 代码
-
-### 2.4.1. 产品
+#### 5.1.1.产品
 
 ```java
-package com.fei.main.part3.section19_1Builder.part4;
+package com.fei.main.part3.section13;
 
 /**
- * 产品 魔方
+ * 大客车(抽象产品)
  * @author xurunfei
- * @date 2017/12/15.
+ * @date 2017/12/1.
  */
-public class MagicCube {
-    /** 魔方的完成度 */
-    private int completeDegree;
-    /** 魔方完成了几面 */
-    private int completeSide;
+public interface Car {
+    /**
+     * 生产
+     * @author: xurunfei
+     * @date: 2017/12/1 15:59
+     */
+    void getRook();
+}
+```
 
-    public int getCompleteDegree() {
-        return completeDegree;
+```java
+package com.fei.main.part3.section13;
+
+/**
+ * 大客车(具体产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class BigCar implements Car{
+    @Override
+    public void getRook() {
+        System.out.println("大客车开始生产.......");
     }
+}
+```
 
-    public void setCompleteDegree(int completeDegree) {
-        this.completeDegree = completeDegree;
+```java
+package com.fei.main.part3.section13;
+
+/**
+ * 小客车(具体产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class SmallCar implements Car {
+    @Override
+    public void getRook() {
+        System.out.println("小客车开始生产.....");
     }
+}
+```
 
-    public int getCompleteSide() {
-        return completeSide;
-    }
+#### 5.1.2.工厂
 
-    public void setCompleteSide(int completeSide) {
-        this.completeSide = completeSide;
+```java
+package com.fei.main.part3.section12;
+
+/**
+ * 汽车工厂(简单工厂)
+ * @author xurunfei
+ * @date 2017/12/5.
+ */
+public class RookFactory {
+    public Car createRook(String type){
+        Car car = null;
+        switch (type){
+            case "bigCar":
+                car = new BigCar();
+                break;
+            case "smallCar":
+                car = new SmallCar();
+                break;
+        }
+        return car;
     }
 }
 
 ```
 
-### 2.4.2. 抽象建造者
+#### 5.1.3.客户端
 
 ```java
-package com.fei.main.part3.section19_1Builder.part4;
+package com.fei.main.part3.section12;
 
 /**
- * 抽象建造方法
+ * 调用
  * @author xurunfei
- * @date 2017/12/15.
- */
-public abstract class Spell {
-
-    protected MagicCube magicCube;
-    /**
-     * 拼成底部十字
-     * @author xurunfei
-     * @date 2017/12/15 16:30
-     */
-    public abstract void  spellButtomCross();
-
-    /**
-     * 拼成底部
-     * @author xurunfei
-     * @date 2017/12/15 16:31
-     */
-    public abstract void spellButtomSide();
-
-    /**
-     * 拼成部分四周的图形
-     * @author xurunfei
-     * @date 2017/12/15 16:32
-     */
-    public abstract void spellPartOfAround();
-    
-    /**
-     * 拼成顶部
-     * @author xurunfei
-     * @date 2017/12/15 16:33
-     */
-    public abstract void spellTopSide();
-    
-    /**
-     * 完成周围图形
-     * @author xurunfei
-     * @date 2017/12/15 16:38
-     */
-    public abstract void spellAllAround();
-
-    /**
-     * 完成产品
-     * @author xurunfei
-     * @date 2017/12/15 16:38
-     */
-    public abstract MagicCube complete();
-}
-
-```
-
-### 2.4.3. 具体建造者
-
-```java
-package com.fei.main.part3.section19_1Builder.part4;
-
-/**
- * 具体魔方的方法
- * @author xurunfei
- * @date 2017/12/15.
- */
-public class ConcreteSpell extends Spell {
-    @Override
-    public void spellButtomCross() {
-        magicCube.setCompleteDegree(20);
-        magicCube.setCompleteSide(1);
-    }
-
-    @Override
-    public void spellButtomSide() {
-        magicCube.setCompleteSide(magicCube.getCompleteDegree()+20);
-    }
-
-    @Override
-    public void spellPartOfAround() {
-        magicCube.setCompleteSide(magicCube.getCompleteDegree()+20);
-
-    }
-
-    @Override
-    public void spellTopSide() {
-        magicCube.setCompleteSide(magicCube.getCompleteDegree()+20);
-        magicCube.setCompleteSide(magicCube.getCompleteSide()+1);
-    }
-
-    @Override
-    public void spellAllAround() {
-        magicCube.setCompleteSide(magicCube.getCompleteDegree()+20);
-        magicCube.setCompleteSide(magicCube.getCompleteSide()+4);
-    }
-
-    @Override
-    public MagicCube complete() {
-        return magicCube;
-    }
-}
-
-```
-
-### 总结
-
-```java
-package com.fei.main.part3.section19_1Builder.part4;
-
-/**
- * 导演者角色
- * @author xurunfei
- * @date 2017/12/15.
- */
-public class People {
-    private Spell spell;
-
-    public People(Spell spell) {
-        this.spell = spell;
-    }
-
-    /**
-     * 拼魔方
-     * @author xurunfei
-     * @date 2017/12/15 16:54
-     */
-    public MagicCube spellMagicCube(){
-        spell.spellButtomCross();
-        spell.spellButtomSide();
-        spell.spellPartOfAround();
-        spell.spellTopSide();
-        spell.spellAllAround();
-        return spell.complete();
-    }
-}
-
-```
-
-### 123123
-
-```java
-package com.fei.main.part3.section19_1Builder.part4;
-
-/**
- * @author xurunfei
- * @date 2017/12/15.
+ * @date 2017/12/1.
  */
 public class Client {
     public static void main(String[] args) {
-        Spell spell = new ConcreteSpell();//拼魔方公式
-        People people = new People(spell);//拼魔方的人
-        MagicCube magicCube = people.spellMagicCube();//开始拼魔方,得到完整的魔方
+        Car freightCar = RookFactory.createRook("bigCar");
+        freightCar.getRook();//生产车
+    }
+}
+```
+
+#### 5.1.4.小结
+
+​	由上面可以看出,通过简单工厂方法```RookFactory```的```createRook```方法直接生产车
+
+ 	优点:工厂方法包含判断逻辑,客户端直接实例化类,去除产品依赖
+
+​	缺点:如果要添加新的产品需要修改工厂方法类,违背了开闭原则
+
+### 5.2.工厂方法模式
+
+#### 5.2.1.产品
+
+```java
+package com.fei.main.part3.section13;
+
+/**
+ * 大客车(抽象产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public interface Car {
+    /**
+     * 生产
+     * @author: xurunfei
+     * @date: 2017/12/1 15:59
+     */
+    void getRook();
+}
+```
+
+```java
+package com.fei.main.part3.section13;
+
+/**
+ * 大客车(具体产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class BigCar implements Car{
+    @Override
+    public void getRook() {
+        System.out.println("大客车开始生产.......");
+    }
+}
+```
+
+```java
+package com.fei.main.part3.section13;
+
+/**
+ * 小客车(具体产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class SmallCar implements Car {
+    @Override
+    public void getRook() {
+        System.out.println("小客车开始生产.....");
+    }
+}
+```
+
+#### 5.2.2.工厂
+
+```java
+package com.fei.main.part3.section13.factory;
+
+import com.fei.main.part3.section13.Car;
+
+/**
+ * 客车工厂(抽象工厂)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public interface CarFactory {
+    Car createCar();
+}
+
+```
+
+```java
+package com.fei.main.part3.section13.factory;
+
+import com.fei.main.part3.section13.Car;
+import com.fei.main.part3.section13.BigCar;
+
+/**
+ * 大客车工厂(具体工厂)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class BigCarFactory implements CarFactory{
+    @Override
+    public Car createCar() {
+        return new BigCar();
+    }
+}
+```
+
+```java
+package com.fei.main.part3.section13.factory;
+
+import com.fei.main.part3.section13.Car;
+import com.fei.main.part3.section13.SmallCar;
+
+/**
+ * 小客车工厂(具体工厂)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class SmallCarFactory implements CarFactory {
+    @Override
+    public Car createCar() {
+        return new SmallCar();
     }
 }
 
 ```
 
-### 总结
+#### 5.2.3.客户端
 
-建造者模式把拼魔方的流程对客户端隐藏,客户端只需要像人请求,要把这个魔方拼好得到就行,人必须按照魔方的流程一步一步才能将魔方拼好,一步没完成就会影响下一步,当全部流程走完,魔方才能拼完整
+```java
+package com.fei.main.part3.section13;
+
+import com.fei.main.part3.section13.factory.CarFactory;
+import com.fei.main.part3.section13.factory.BigCarFactory;
+
+/**
+ * 调用
+ * 	当一个类不知道它所必须创建对象的类或一个类希望由子类来指定它所创 建的对象时，
+ *  当类将创建对象的职责委托给多个帮助子类中的某一个，并且你希望将哪一个帮助子类是代理者这一信息局部化的时候，
+ *  可以使用工厂方法。
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class Client {
+    public static void main(String[] args) {
+        CarFactory freightCarFactory = new BigCarFactory();
+
+        Car freightCar = freightCarFactory.createCar();
+        freightCar.getRook();
+    }
+}
+
+```
+
+#### 5.2.4.小结
+
+​	由上面看出,工厂方法和简单工厂的区别就是,简单工厂实例化通过一个工厂完成,而工厂方法,每一个具体产品就要一个具体工厂来实例化,并且工厂方法是符合```ocp``` (开闭)原则的
+
+​	优点:添加产品不需要修改工厂方法,符合```ocp``` 原则
+
+​	缺点:<br>		1. 增加一个产品就要增加一个工厂<br>		2. 只能处理单一等级结构的产品
+
+### 5.3 抽象工厂方法模式
+
+#### 5.3.1.产品
+
+```java
+package com.fei.main.part3.section14.AutoMobile;
+
+/**
+ * 汽车(抽象产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public interface AutoMobile {
+    void getRook();
+}
+
+```
+
+```java
+package com.fei.main.part3.section14.AutoMobile;
+
+/**
+ * 大型汽车(具体产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class BigAutoMobile implements AutoMobile {
+    @Override
+    public void getRook() {
+        System.out.println("汽车开始生产......");
+    }
+}
+
+```
+
+```java
+package com.fei.main.part3.section14.AutoMobile;
+
+/**
+ * 小型汽车(具体产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class SmallAutoMobile implements AutoMobile {
+    @Override
+    public void getRook() {
+        System.out.println("小汽车开始生产......");
+    }
+}
+
+```
+
+#### 5.3.2.产品
+
+```java
+package com.fei.main.part3.section14.Car;
+
+/**
+ * 大巴
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public interface Car {
+    /**
+     * 生产
+     * @author: xurunfei
+     * @date: 2017/12/1 15:59
+     */
+    void getRook();
+}
+
+```
+
+```java
+package com.fei.main.part3.section14.Car;
+
+/**
+ * 大客车
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class BigCar implements Car {
+    @Override
+    public void getRook() {
+        System.out.println("大客车开始生产.......");
+    }
+}
+
+```
+
+```java
+package com.fei.main.part3.section14.Car;
+
+/**
+ * 小客车
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class SmallCar implements Car {
+    @Override
+    public void getRook() {
+        System.out.println("小客车开始生产.....");
+    }
+}
+
+```
+
+#### 5.3.3.工厂
+
+```java
+package com.fei.main.part3.section14.factory;
+
+import com.fei.main.part3.section14.AutoMobile.AutoMobile;
+import com.fei.main.part3.section14.Car.Car;
+
+/**
+ * 车工厂
+ *
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public interface RookFactory {
+    /**
+     * 创建大客车
+     * @author: xurunfei
+     * @date: 2017/12/1 17:25
+     */
+    Car CreateCar();
+    /**
+     * 创建汽车
+     * @author: xurunfei
+     * @date: 2017/12/1 17:26
+     */
+    AutoMobile CreateAutoMobile();
+}
+
+```
+
+
+
+```java
+package com.fei.main.part3.section14.factory;
+
+import com.fei.main.part3.section14.AutoMobile.AutoMobile;
+import com.fei.main.part3.section14.AutoMobile.BigAutoMobile;
+import com.fei.main.part3.section14.Car.BigCar;
+import com.fei.main.part3.section14.Car.Car;
+
+/**
+ * 大型工厂
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class BigFactory implements RookFactory {
+
+    @Override
+    public Car CreateCar() {
+        return new BigCar();
+    }
+
+    @Override
+    public AutoMobile CreateAutoMobile() {
+        return new BigAutoMobile();
+    }
+}
+
+```
+
+```java
+package com.fei.main.part3.section14.factory;
+
+import com.fei.main.part3.section14.AutoMobile.AutoMobile;
+import com.fei.main.part3.section14.AutoMobile.BigAutoMobile;
+import com.fei.main.part3.section14.AutoMobile.SmallAutoMobile;
+import com.fei.main.part3.section14.Car.Car;
+import com.fei.main.part3.section14.Car.SmallCar;
+
+/**
+ * 小型工厂
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class SmallFactory implements RookFactory {
+
+    @Override
+    public Car CreateCar() {
+        return new SmallCar();
+    }
+
+    @Override
+    public AutoMobile CreateAutoMobile() {
+        return new SmallAutoMobile();
+    }
+}
+
+```
+
+#### 5.3.4.客户端
+
+```java
+package com.fei.main.part3.section14;
+
+import com.fei.main.part3.section13.factory.BigCarFactory;
+import com.fei.main.part3.section13.factory.CarFactory;
+import com.fei.main.part3.section14.AutoMobile.AutoMobile;
+import com.fei.main.part3.section14.Car.Car;
+import com.fei.main.part3.section14.factory.BigFactory;
+import com.fei.main.part3.section14.factory.RookFactory;
+import com.fei.main.part3.section14.factory.SmallFactory;
+
+/**
+ * 调用
+ * 	一个系统不应当依赖于产品类实例如何被创建、组合和表达的细节，
+ * 	这对于所有形态的工厂模式都是重要的。
+ *  这个系统有多于一个的产品族，而系统<b>只消费其中某一产品族</b>。
+ *  <b>同属于同一个产品族的产品是在一起使用的</b>，
+ *  这一约束必须在系统的设计中体现出来。系统提供一个产品类的库，
+ *  所有的产品以同样的接口出现，从而使客户端不依赖于实现。
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class Client {
+    public static void main(String[] args) {
+//        RookFactory rookFactory = new BigFactory();//大工厂,
+        RookFactory rookFactory = new SmallFactory();//小工厂
+        Car car = rookFactory.CreateCar();
+        car.getRook();
+        AutoMobile autoMobile = rookFactory.CreateAutoMobile();
+        autoMobile.getRook();
+    }
+}
+
+```
+
+#### 5.3.5.小结
+
+​	有上面代码看出,现在有两种产品客车和汽车,有两个系列大车和小车,两个系列分别对应两个工厂,客户端可以通过使用不同的工厂来创造不同系列的产品,在这里,客车和汽车是不同等级结构,大车和小车是不同的产品族
+
+​	优点:客户端可以方便地切换产品生产
+
+​	缺点:每增加产品 麻烦,就需要在每个工厂里面添加一个产品
+
+### 5.4.类图比较
+
+![简单工厂模式类图](../../images/简单工厂模式类图.png)
+
+
+
+![工厂方法模式类图](../../images/工厂方法模式类图.png)
+
+![抽象工厂模式类图](../../images/抽象工厂模式类图.png)
+
+### 5.5.总结
+
+​	简单工厂:生产的同一等级结构的产品,如果确保产品不会增加了可以使用<br> 	工厂方法:生产的同一等级结构的产品<br> 	简单工厂:生产同一产品族的产品
+
+## 6.参考资料
+
+[3模种式的优缺点](https://wenku.baidu.com/view/60c6ca21192e45361066f5e0.html)
+
+[车的例子](https://www.2cto.com/kf/201508/435119.html)
+
+[大话设计模式](http://blog.csdn.net/u010412301/article/details/54925016)
+
+[产品等级结构和产品族的区别](http://blog.csdn.net/mark_lq/article/details/45132113)
+
+欢迎纠错
+
+
+
