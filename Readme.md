@@ -4,7 +4,7 @@
 ​	​	[抽象工厂方法](#抽象工厂方法)    
 ​	​	[产品族和产品等级结构](#产品族和产品等级结构)    
 ​	​	​	​	[简单工厂方法模式](#简单工厂方法模式)    
-​	​	​	​	​	​	[产品](#产品1)    
+​						[产品](#产品1)    
 ​	​	​	​	​	​	[工厂](#工厂1)    
 ​	​	​	​	​	​	[客户端](#客户端1)    
 ​	​	​	​	​	​	[小结](#小结1)    
@@ -14,8 +14,8 @@
 ​	​	​	​	​	​	[客户端](#客户端2)    
 ​	​	​	​	​	​	[小结](#小结2)    
 ​	​	​	​	[抽象工厂方法模式](#抽象工厂方法模式)    
-​	​	​	​	​	​	[产品](#产品3)    
-​	​	​	​	​	​	[产品](#产品4)    
+​						[产品](#产品3)    
+​						[产品](#产品4)    
 ​	​	​	​	​	​	[工厂](#工厂3)    
 ​	​	​	​	​	​	[客户端](#客户端3)    
 ​	​	​	​	​	​	[小结](#小结3)    
@@ -51,113 +51,6 @@
 ### 简单工厂方法模式
 
 一个工厂要生产所有种类的车
-
-#### <a id='产品0'>产品</a>
-
-```java
-package com.fei.main.part3.section13;
-
-/**
- * 大客车(抽象产品)
- * @author xurunfei
- * @date 2017/12/1.
- */
-public interface Car {
-    /**
-     * 生产
-     * @author: xurunfei
-     * @date: 2017/12/1 15:59
-     */
-    void getRook();
-}
-```
-
-```java
-package com.fei.main.part3.section13;
-
-/**
- * 大客车(具体产品)
- * @author xurunfei
- * @date 2017/12/1.
- */
-public class BigCar implements Car{
-    @Override
-    public void getRook() {
-        System.out.println("大客车开始生产.......");
-    }
-}
-```
-
-```java
-package com.fei.main.part3.section13;
-
-/**
- * 小客车(具体产品)
- * @author xurunfei
- * @date 2017/12/1.
- */
-public class SmallCar implements Car {
-    @Override
-    public void getRook() {
-        System.out.println("小客车开始生产.....");
-    }
-}
-```
-
-#### <a id='工厂0'>工厂</a>
-
-```java
-package com.fei.main.part3.section12;
-
-/**
- * 汽车工厂(简单工厂)
- * @author xurunfei
- * @date 2017/12/5.
- */
-public class RookFactory {
-    public Car createRook(String type){
-        Car car = null;
-        switch (type){
-            case "bigCar":
-                car = new BigCar();
-                break;
-            case "smallCar":
-                car = new SmallCar();
-                break;
-        }
-        return car;
-    }
-}
-
-```
-
-#### <a id='客户端0'>客户端</a>
-
-```java
-package com.fei.main.part3.section12;
-
-/**
- * 调用
- * @author xurunfei
- * @date 2017/12/1.
- */
-public class Client {
-    public static void main(String[] args) {
-        Car freightCar = RookFactory.createRook("bigCar");
-        freightCar.getRook();//生产车
-    }
-}
-```
-
-#### <a id='小结0'>小结</a>
-
-​	由上面可以看出,通过简单工厂方法```RookFactory```的```createRook```方法直接生产车
-
- 	优点:工厂方法包含判断逻辑,客户端直接实例化类,去除产品依赖
-
-​	缺点:如果要添加新的产品需要修改工厂方法类,违背了开闭原则
-
-### 工厂方法模式
 
 #### <a id='产品1'>产品</a>
 
@@ -214,6 +107,113 @@ public class SmallCar implements Car {
 #### <a id='工厂1'>工厂</a>
 
 ```java
+package com.fei.main.part3.section12;
+
+/**
+ * 汽车工厂(简单工厂)
+ * @author xurunfei
+ * @date 2017/12/5.
+ */
+public class RookFactory {
+    public Car createRook(String type){
+        Car car = null;
+        switch (type){
+            case "bigCar":
+                car = new BigCar();
+                break;
+            case "smallCar":
+                car = new SmallCar();
+                break;
+        }
+        return car;
+    }
+}
+
+```
+
+#### <a id='客户端1'>客户端</a>
+
+```java
+package com.fei.main.part3.section12;
+
+/**
+ * 调用
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class Client {
+    public static void main(String[] args) {
+        Car freightCar = RookFactory.createRook("bigCar");
+        freightCar.getRook();//生产车
+    }
+}
+```
+
+#### <a id='小结1'>小结</a>
+
+​	由上面可以看出,通过简单工厂方法```RookFactory```的```createRook```方法直接生产车
+
+ 	优点:工厂方法包含判断逻辑,客户端直接实例化类,去除产品依赖
+
+​	缺点:如果要添加新的产品需要修改工厂方法类,违背了开闭原则
+
+### 工厂方法模式
+
+#### <a id='产品2'>产品</a>
+
+```java
+package com.fei.main.part3.section13;
+
+/**
+ * 大客车(抽象产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public interface Car {
+    /**
+     * 生产
+     * @author: xurunfei
+     * @date: 2017/12/1 15:59
+     */
+    void getRook();
+}
+```
+
+```java
+package com.fei.main.part3.section13;
+
+/**
+ * 大客车(具体产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class BigCar implements Car{
+    @Override
+    public void getRook() {
+        System.out.println("大客车开始生产.......");
+    }
+}
+```
+
+```java
+package com.fei.main.part3.section13;
+
+/**
+ * 小客车(具体产品)
+ * @author xurunfei
+ * @date 2017/12/1.
+ */
+public class SmallCar implements Car {
+    @Override
+    public void getRook() {
+        System.out.println("小客车开始生产.....");
+    }
+}
+```
+
+#### <a id='工厂2'>工厂</a>
+
+```java
 package com.fei.main.part3.section13.factory;
 
 import com.fei.main.part3.section13.Car;
@@ -268,7 +268,7 @@ public class SmallCarFactory implements CarFactory {
 
 ```
 
-#### <a id='客户端1'>客户端</a>
+#### <a id='客户端2'>客户端</a>
 
 ```java
 package com.fei.main.part3.section13;
@@ -295,7 +295,7 @@ public class Client {
 
 ```
 
-#### <a id='小结1'>小结</a>
+#### <a id='小结2'>小结</a>
 
 ​	由上面看出,工厂方法和简单工厂的区别就是,简单工厂实例化通过一个工厂完成,而工厂方法,每一个具体产品就要一个具体工厂来实例化,并且工厂方法是符合```ocp``` (开闭)原则的
 
@@ -305,7 +305,7 @@ public class Client {
 
 ### 抽象工厂方法模式
 
-#### <a id='产品2'>产品</a>
+#### <a id='产品3'>产品</a>
 
 ```java
 package com.fei.main.part3.section14.AutoMobile;
@@ -355,7 +355,7 @@ public class SmallAutoMobile implements AutoMobile {
 
 ```
 
-#### <a id='产品3'>产品</a>
+#### <a id='产品4'>产品</a>
 
 ```java
 package com.fei.main.part3.section14.Car;
@@ -410,7 +410,7 @@ public class SmallCar implements Car {
 
 ```
 
-#### <a id='工厂2'>工厂</a>
+#### <a id='工厂3'>工厂</a>
 
 ```java
 package com.fei.main.part3.section14.factory;
@@ -500,7 +500,7 @@ public class SmallFactory implements RookFactory {
 
 ```
 
-#### <a id='客户端2'>客户端</a>
+#### <a id='客户端3'>客户端</a>
 
 ```java
 package com.fei.main.part3.section14;
@@ -537,7 +537,7 @@ public class Client {
 
 ```
 
-#### <a id='小结2'>小结</a>
+#### <a id='小结3'>小结</a>
 
 ​	有上面代码看出,现在有两种产品客车和汽车,有两个系列大车和小车,两个系列分别对应两个工厂,客户端可以通过使用不同的工厂来创造不同系列的产品,在这里,客车和汽车是不同等级结构,大车和小车是不同的产品族
 
